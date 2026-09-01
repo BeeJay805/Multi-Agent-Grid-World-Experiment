@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from .models import Action, Direction, Interaction, Percept, Position, Terrain
+from .models import Action, Direction, Interaction, Percept, Position, Terrain, MessageKind, Message
 
 
 class ExampleBaselineAgent:
@@ -126,11 +126,68 @@ class CoordinatedAgentTemplate:
         self.agent_id = agent_id
         self.known_packages: set[Position] = set()
         self.claimed_by: dict[Position, str] = {}
+        self.current_goal = None
 
     def act(self, percept: Percept) -> Action:
         # TODO 1: update only local memory from percept.visible_cells.
+        newly_discovered = set()
+        for position, cell in percept.visible_cells.items():
+            if cell.package_present:
+                self.known_packages.add(position)
+                newly_discovered.add(position)
+            else:
+                if position in self.known_packages:
+                    self.known_packages.remove(position)
+
+
+
         # TODO 2: process messages received at the start of this decision.
+        for message in percept.messages:
+            if message.kind == MessageKind.RELEASE:
+                if message.package_location in self.claimed_by:
+
+                    del self.claimed_by[message.package_location]
+            elif message.kind == MessageKind.DISCOVER:
+                self.known_packages.add(message.package_location)
+
+            elif message.kind == MessageKind.CLAIM:
+                self.claimed_by[message.package_location] = message.sender
+
+
         # TODO 3: choose a target that respects claims and avoids local traffic.
+        available_packages: set[Position] = set()
+        for position in self.known_packages:
+            if position in self.claimed_by:
+                if self.claimed_by[position] == self.agent_id:
+                    available_packages.add(position)
+            else:
+                available_packages.add(position)
+        best_package = None
+        best_distance = None
+        if available_packages:
+            for position in available_packages:
+                distance = self._manhattan(percept.self_position, position)
+                if best_distance is None or distance < best_distance:
+                    best_distance = distance
+                    best_package = position
+                elif distance == best_distance and position < best_package:
+                    best_package = position
+        if self.current_goal not in self.known_packages or (
+                self.current_goal in self.claimed_by
+                and self.claimed_by[self.current_goal] != self.agent_id
+        ):
+            self.current_goal = best_package
+
+
+
+
         # TODO 4: send DISCOVER, CLAIM, or RELEASE when the protocol requires it.
+        outgoing_message = None
+        for position in newly_discovered:
+            message = Message(MessageKind.DISCOVER, position)
+            outgoing_message = message
+
+
         # TODO 5: return one Action(move=..., interaction=..., message=...).
+
         return Action()
