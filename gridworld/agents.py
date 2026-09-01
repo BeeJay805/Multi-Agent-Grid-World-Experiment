@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from os import remove
 
 from .models import Action, Direction, Interaction, Percept, Position, Terrain, MessageKind, Message
 
@@ -115,99 +114,214 @@ class ExampleBaselineAgent:
     def _manhattan(first: Position, second: Position) -> int:
         return abs(first[0] - second[0]) + abs(first[1] - second[1])
 
+    class CoordinatedAgentTemplate:
+        """A safe, incomplete shell for the student coordination policy.
 
-class CoordinatedAgentTemplate:
-    """A safe, incomplete shell for the student coordination policy.
+        The method intentionally returns WAIT until students add their own local
+        memory, claim rules, DISCOVER/CLAIM/RELEASE messages, and collision-aware
+        action selection.  It is not a hidden solution.
+        """
 
-    The method intentionally returns WAIT until students add their own local
-    memory, claim rules, DISCOVER/CLAIM/RELEASE messages, and collision-aware
-    action selection.  It is not a hidden solution.
-    """
+        def reset(self, agent_id: str) -> None:
+            self.agent_id = agent_id
+            self.known_packages: set[Position] = set()
+            self.claimed_by: dict[Position, str] = {}
+            self.current_goal = None
+            self.unanounced_packages = set()
 
-    def reset(self, agent_id: str) -> None:
-        self.agent_id = agent_id
-        self.known_packages: set[Position] = set()
-        self.claimed_by: dict[Position, str] = {}
-        self.current_goal = None
-        self.unanounced_packages = set()
+            self.base_location: Position | None = None
+            self._exploration_cursor = 0
+            self.exploration_order = (
+                Direction.NORTH,
+                Direction.EAST,
+                Direction.SOUTH,
+                Direction.WEST,
+            )
 
-    def act(self, percept: Percept) -> Action:
-        # TODO 1: update only local memory from percept.visible_cells.
-        for position, cell in percept.visible_cells.items():
-            if cell.package_present:
-                if position not in self.known_packages:
-                    self.unanounced_packages.add(position)
-                self.known_packages.add(position)
-            else:
-                if position in self.known_packages:
-                    self.known_packages.remove(position)
+        def act(self, percept: Percept) -> Action:
+            # TODO 1: update only local memory from percept.visible_cells.
+            for position, cell in percept.visible_cells.items():
+                if cell.terrain is Terrain.BASE:
+                    self.base_location = position
 
-
-
-        # TODO 2: process messages received at the start of this decision.
-        for message in percept.messages:
-            if message.kind == MessageKind.RELEASE:
-                if message.package_location in self.claimed_by:
-
-                    del self.claimed_by[message.package_location]
-            elif message.kind == MessageKind.DISCOVER:
-                self.known_packages.add(message.package_location)
-
-            elif message.kind == MessageKind.CLAIM:
-                self.claimed_by[message.package_location] = message.sender
-
-
-        # TODO 3: choose a target that respects claims and avoids local traffic.
-        old_goal = self.current_goal
-        if not percept.carrying:
-
-            available_packages: set[Position] = set()
-            for position in self.known_packages:
-                if position in self.claimed_by:
-                    if self.claimed_by[position] == self.agent_id:
-                        available_packages.add(position)
+                if cell.package_present:
+                    if position not in self.known_packages:
+                        self.unanounced_packages.add(position)
+                    self.known_packages.add(position)
                 else:
-                    available_packages.add(position)
-            best_package = None
-            best_distance = None
-            if available_packages:
-                for position in available_packages:
-                    distance = self._manhattan(percept.self_position, position)
-                    if best_distance is None or distance < best_distance:
-                        best_distance = distance
-                        best_package = position
-                    elif distance == best_distance and position < best_package:
-                        best_package = position
-            if self.current_goal not in self.known_packages or (
-                    self.current_goal in self.claimed_by
-                    and self.claimed_by[self.current_goal] != self.agent_id
-            ):
-                self.current_goal = best_package
+                    if position in self.known_packages:
+                        self.known_packages.remove(position)
 
-        # TODO 4: send DISCOVER, CLAIM, or RELEASE when the protocol requires it.
-        outgoing_message = None
-        # RELEASE
-        if old_goal is not None and old_goal != self.current_goal:
-            if old_goal in self.claimed_by and self.claimed_by[old_goal] == self.agent_id:
-                del self.claimed_by[old_goal]
-                outgoing_message = Message(MessageKind.RELEASE, old_goal)
-        # DISCOVER
-        if self.unanounced_packages:
-            smallest_package = min(self.unanounced_packages)
-            outgoing_message = Message(MessageKind.DISCOVER, smallest_package)
-            self.unanounced_packages.remove(smallest_package)
-        #CLAIM
-        if outgoing_message is None and self.current_goal is not None:
-            if self.current_goal not in self.claimed_by:
-                self.claimed_by[self.current_goal] = self.agent_id
-                outgoing_message = Message(MessageKind.CLAIM, self.current_goal)
+                    if position in self.unanounced_packages:
+                        self.unanounced_packages.remove(position)
 
+            # TODO 2: process messages received at the start of this decision.
+            for message in percept.messages:
+                if message.kind == MessageKind.RELEASE:
+                    if message.package_location in self.claimed_by:
+                        if self.claimed_by[message.package_location] == message.sender:
+                            del self.claimed_by[message.package_location]
 
+                elif message.kind == MessageKind.DISCOVER:
+                    self.known_packages.add(message.package_location)
 
+                elif message.kind == MessageKind.CLAIM:
+                    if message.package_location not in self.claimed_by:
+                        self.claimed_by[message.package_location] = message.sender
+                    else:
+                        self.claimed_by[message.package_location] = min(
+                            self.claimed_by[message.package_location],
+                            message.sender
+                        )
 
+            # TODO 3: choose a target that respects claims and avoids local traffic.
+            old_goal = self.current_goal
 
-        # TODO 5: return one Action(move=..., interaction=..., message=...).
-        if percept.carrying:
-            if
+            if not percept.carrying:
 
-        return Action(, , outgoing_message)
+                available_packages: set[Position] = set()
+
+                for position in self.known_packages:
+                    if position in self.claimed_by:
+                        if self.claimed_by[position] == self.agent_id:
+                            available_packages.add(position)
+                    else:
+                        available_packages.add(position)
+
+                best_package = None
+                best_distance = None
+
+                if available_packages:
+                    for position in available_packages:
+                        distance = self._manhattan(percept.self_position, position)
+
+                        if best_distance is None or distance < best_distance:
+                            best_distance = distance
+                            best_package = position
+
+                        elif distance == best_distance and position < best_package:
+                            best_package = position
+
+                if self.current_goal not in self.known_packages or (
+                        self.current_goal in self.claimed_by
+                        and self.claimed_by[self.current_goal] != self.agent_id
+                ):
+                    self.current_goal = best_package
+
+            # TODO 4: send DISCOVER, CLAIM, or RELEASE when the protocol requires it.
+            outgoing_message = None
+
+            # RELEASE
+            if old_goal is not None and old_goal != self.current_goal:
+                if old_goal in self.claimed_by and self.claimed_by[old_goal] == self.agent_id:
+                    del self.claimed_by[old_goal]
+                    outgoing_message = Message(MessageKind.RELEASE, old_goal)
+
+            # DISCOVER
+            if outgoing_message is None and self.unanounced_packages:
+                smallest_package = min(self.unanounced_packages)
+                outgoing_message = Message(MessageKind.DISCOVER, smallest_package)
+                self.unanounced_packages.remove(smallest_package)
+
+            # CLAIM
+            if outgoing_message is None and self.current_goal is not None:
+                if self.current_goal not in self.claimed_by:
+                    self.claimed_by[self.current_goal] = self.agent_id
+                    outgoing_message = Message(MessageKind.CLAIM, self.current_goal)
+
+            # TODO 5: return one Action(move=..., interaction=..., message=...).
+            if percept.carrying:
+                if percept.self_position == self.base_location:
+                    return Action(
+                        interaction=Interaction.DROP,
+                        message=outgoing_message
+                    )
+
+                if self.base_location is not None:
+                    move = self._move_toward(percept, self.base_location)
+
+                    return Action(
+                        move=move,
+                        message=outgoing_message
+                    )
+
+                move = self._explore(percept)
+
+                return Action(
+                    move=move,
+                    message=outgoing_message
+                )
+
+            current_cell = percept.visible_cells[percept.self_position]
+
+            if current_cell.package_present:
+                return Action(
+                    interaction=Interaction.PICKUP,
+                    message=outgoing_message
+                )
+
+            if self.current_goal is not None:
+                move = self._move_toward(percept, self.current_goal)
+
+                return Action(
+                    move=move,
+                    message=outgoing_message
+                )
+
+            move = self._explore(percept)
+
+            return Action(
+                move=move,
+                message=outgoing_message
+            )
+
+        # functions copied from example class
+        @staticmethod
+        def _can_enter(percept: Percept, direction: Direction) -> bool:
+            row_delta, column_delta = direction.delta
+            destination = (
+                percept.self_position[0] + row_delta,
+                percept.self_position[1] + column_delta,
+            )
+            cell = percept.visible_cells.get(destination)
+
+            if cell is None or cell.terrain is Terrain.OBSTACLE:
+                return False
+
+            return not cell.agent_ids
+
+        @staticmethod
+        def _manhattan(first: Position, second: Position) -> int:
+            return abs(first[0] - second[0]) + abs(first[1] - second[1])
+
+        def _explore(self, percept: Percept) -> Direction:
+            for offset in range(len(self.exploration_order)):
+                index = (self._exploration_cursor + offset) % len(self.exploration_order)
+                direction = self.exploration_order[index]
+
+                if self._can_enter(percept, direction):
+                    self._exploration_cursor = (index + 1) % len(self.exploration_order)
+                    return direction
+
+            return Direction.WAIT
+
+        def _move_toward(self, percept: Percept, target: Position) -> Direction:
+            row, column = percept.self_position
+            target_row, target_column = target
+            preferred: list[Direction] = []
+
+            if target_row < row:
+                preferred.append(Direction.NORTH)
+            elif target_row > row:
+                preferred.append(Direction.SOUTH)
+
+            if target_column < column:
+                preferred.append(Direction.WEST)
+            elif target_column > column:
+                preferred.append(Direction.EAST)
+
+            for direction in (*preferred, *self.exploration_order):
+                if self._can_enter(percept, direction):
+                    return direction
+
+            return Direction.WAIT
