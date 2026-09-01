@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from os import remove
+
 from .models import Action, Direction, Interaction, Percept, Position, Terrain, MessageKind, Message
 
 
@@ -127,14 +129,15 @@ class CoordinatedAgentTemplate:
         self.known_packages: set[Position] = set()
         self.claimed_by: dict[Position, str] = {}
         self.current_goal = None
+        self.unanounced_packages = set()
 
     def act(self, percept: Percept) -> Action:
         # TODO 1: update only local memory from percept.visible_cells.
-        newly_discovered = set()
         for position, cell in percept.visible_cells.items():
             if cell.package_present:
+                if position not in self.known_packages:
+                    self.unanounced_packages.add(position)
                 self.known_packages.add(position)
-                newly_discovered.add(position)
             else:
                 if position in self.known_packages:
                     self.known_packages.remove(position)
@@ -155,39 +158,56 @@ class CoordinatedAgentTemplate:
 
 
         # TODO 3: choose a target that respects claims and avoids local traffic.
-        available_packages: set[Position] = set()
-        for position in self.known_packages:
-            if position in self.claimed_by:
-                if self.claimed_by[position] == self.agent_id:
+        old_goal = self.current_goal
+        if not percept.carrying:
+
+            available_packages: set[Position] = set()
+            for position in self.known_packages:
+                if position in self.claimed_by:
+                    if self.claimed_by[position] == self.agent_id:
+                        available_packages.add(position)
+                else:
                     available_packages.add(position)
-            else:
-                available_packages.add(position)
-        best_package = None
-        best_distance = None
-        if available_packages:
-            for position in available_packages:
-                distance = self._manhattan(percept.self_position, position)
-                if best_distance is None or distance < best_distance:
-                    best_distance = distance
-                    best_package = position
-                elif distance == best_distance and position < best_package:
-                    best_package = position
-        if self.current_goal not in self.known_packages or (
-                self.current_goal in self.claimed_by
-                and self.claimed_by[self.current_goal] != self.agent_id
-        ):
-            self.current_goal = best_package
-
-
-
+            best_package = None
+            best_distance = None
+            if available_packages:
+                for position in available_packages:
+                    distance = self._manhattan(percept.self_position, position)
+                    if best_distance is None or distance < best_distance:
+                        best_distance = distance
+                        best_package = position
+                    elif distance == best_distance and position < best_package:
+                        best_package = position
+            if self.current_goal not in self.known_packages or (
+                    self.current_goal in self.claimed_by
+                    and self.claimed_by[self.current_goal] != self.agent_id
+            ):
+                self.current_goal = best_package
 
         # TODO 4: send DISCOVER, CLAIM, or RELEASE when the protocol requires it.
         outgoing_message = None
-        for position in newly_discovered:
-            message = Message(MessageKind.DISCOVER, position)
-            outgoing_message = message
+        # RELEASE
+        if old_goal is not None and old_goal != self.current_goal:
+            if old_goal in self.claimed_by and self.claimed_by[old_goal] == self.agent_id:
+                del self.claimed_by[old_goal]
+                outgoing_message = Message(MessageKind.RELEASE, old_goal)
+        # DISCOVER
+        if self.unanounced_packages:
+            smallest_package = min(self.unanounced_packages)
+            outgoing_message = Message(MessageKind.DISCOVER, smallest_package)
+            self.unanounced_packages.remove(smallest_package)
+        #CLAIM
+        if outgoing_message is None and self.current_goal is not None:
+            if self.current_goal not in self.claimed_by:
+                self.claimed_by[self.current_goal] = self.agent_id
+                outgoing_message = Message(MessageKind.CLAIM, self.current_goal)
+
+
+
 
 
         # TODO 5: return one Action(move=..., interaction=..., message=...).
+        if percept.carrying:
+            if
 
-        return Action()
+        return Action(, , outgoing_message)
