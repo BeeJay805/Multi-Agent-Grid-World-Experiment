@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 
-from .models import Action, Direction, Interaction, Percept, Position, Terrain, MessageKind, Message
+from .models import Action, Direction, Interaction, Percept, Position, Terrain, MessageKind, MovementResult, Message
 
 
 class ExampleBaselineAgent:
@@ -114,7 +114,8 @@ class ExampleBaselineAgent:
     def _manhattan(first: Position, second: Position) -> int:
         return abs(first[0] - second[0]) + abs(first[1] - second[1])
 
-    class CoordinatedAgentTemplate:
+
+class CoordinatedAgentTemplate:
         """A safe, incomplete shell for the student coordination policy.
 
         The method intentionally returns WAIT until students add their own local
@@ -131,6 +132,7 @@ class ExampleBaselineAgent:
 
             self.base_location: Position | None = None
             self._exploration_cursor = 0
+            self.visit_counts: dict[Position, int] = {}
             self.exploration_order = (
                 Direction.NORTH,
                 Direction.EAST,
@@ -140,6 +142,7 @@ class ExampleBaselineAgent:
 
         def act(self, percept: Percept) -> Action:
             # TODO 1: update only local memory from percept.visible_cells.
+            self.visit_counts[percept.self_position] = self.visit_counts.get(percept.self_position, 0) + 1
             for position, cell in percept.visible_cells.items():
                 if cell.terrain is Terrain.BASE:
                     self.base_location = position
@@ -230,6 +233,15 @@ class ExampleBaselineAgent:
                     outgoing_message = Message(MessageKind.CLAIM, self.current_goal)
 
             # TODO 5: return one Action(move=..., interaction=..., message=...).
+            #collision handling
+            # if the last move caused a collision, robot-2 yields
+
+            if percept.last_result.movement is MovementResult.BLOCKED_COLLISION:
+                if self.agent_id == "robot-2":
+                    return Action(
+                        move=Direction.WAIT,
+                        message=outgoing_message
+                    )
             if percept.carrying:
                 if percept.self_position == self.base_location:
                     return Action(
@@ -293,17 +305,29 @@ class ExampleBaselineAgent:
         @staticmethod
         def _manhattan(first: Position, second: Position) -> int:
             return abs(first[0] - second[0]) + abs(first[1] - second[1])
-
+# I changed this a bit to be more optimized with agents.
+# The code keeps track of visited cells and tried to favor non visited cells
+# I used a set, but I changed it to dictionary with counted values so the agents wouldn't get themselves stuck in a box
         def _explore(self, percept: Percept) -> Direction:
-            for offset in range(len(self.exploration_order)):
-                index = (self._exploration_cursor + offset) % len(self.exploration_order)
-                direction = self.exploration_order[index]
+            best_direction = Direction.WAIT
+            lowest_visits = None
 
+            for direction in self.exploration_order:
                 if self._can_enter(percept, direction):
-                    self._exploration_cursor = (index + 1) % len(self.exploration_order)
-                    return direction
+                    row_delta, column_delta = direction.delta
 
-            return Direction.WAIT
+                    destination = (
+                        percept.self_position[0] + row_delta,
+                        percept.self_position[1] + column_delta,
+                    )
+
+                    visits = self.visit_counts.get(destination, 0)
+
+                    if lowest_visits is None or visits < lowest_visits:
+                        lowest_visits = visits
+                        best_direction = direction
+
+            return best_direction
 
         def _move_toward(self, percept: Percept, target: Position) -> Direction:
             row, column = percept.self_position
@@ -320,8 +344,8 @@ class ExampleBaselineAgent:
             elif target_column > column:
                 preferred.append(Direction.EAST)
 
-            for direction in (*preferred, *self.exploration_order):
+            for direction in preferred:
                 if self._can_enter(percept, direction):
                     return direction
 
-            return Direction.WAIT
+            return self._explore(percept)
