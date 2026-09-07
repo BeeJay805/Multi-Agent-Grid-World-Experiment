@@ -1,0 +1,19 @@
+test_claim_changes_later_action (test_coordination.CoordinationTests.test_claim_changes_later_action) ... ok
+test_conflicting_claims_converge_on_lower_id (test_coordination.CoordinationTests.test_conflicting_claims_converge_on_lower_id) ... ok
+test_current_sight_overrides_stale_discovery (test_coordination.CoordinationTests.test_current_sight_overrides_stale_discovery) ... ok
+test_delivery_releases_claim_on_next_decision (test_coordination.CoordinationTests.test_delivery_releases_claim_on_next_decision) ... ok
+test_maps_are_reachable_and_runs_are_reproducible (test_coordination.CoordinationTests.test_maps_are_reachable_and_runs_are_reproducible) ... ok
+test_non_owner_release_does_not_remove_claim (test_coordination.CoordinationTests.test_non_owner_release_does_not_remove_claim) ... ok
+test_release_is_not_overwritten_by_discovery (test_coordination.CoordinationTests.test_release_is_not_overwritten_by_discovery) ... ok
+test_baseline_picks_up_a_visible_package_in_its_cell (test_environment.ExampleAgentTests.test_baseline_picks_up_a_visible_package_in_its_cell) ... ok
+test_a_package_is_delivered_exactly_once (test_environment.GridWorldContractTests.test_a_package_is_delivered_exactly_once) ... ok
+test_attempted_swap_is_also_blocked (test_environment.GridWorldContractTests.test_attempted_swap_is_also_blocked) ... ok
+test_claim_message_keeps_its_package_location_and_sender (test_environment.GridWorldContractTests.test_claim_message_keeps_its_package_location_and_sender) ... ok
+test_local_percept_contains_no_more_than_a_three_by_three_window (test_environment.GridWorldContractTests.test_local_percept_contains_no_more_than_a_three_by_three_window) ... ok
+test_message_sent_at_t_is_available_at_the_next_decision (test_environment.GridWorldContractTests.test_message_sent_at_t_is_available_at_the_next_decision) ... ok
+test_same_destination_blocks_both_agents (test_environment.GridWorldContractTests.test_same_destination_blocks_both_agents) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.033s
+
+OK

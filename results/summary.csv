@@ -1,0 +1,7 @@
+map,policy,deliveries,score,collisions,steps,moves,invalid,undelivered
+starter,baseline,1,-123,0,60,118,0,3
+starter,coordinated,1,-123,0,60,118,0,3
+middle_gap,baseline,2,-106,0,60,116,0,2
+middle_gap,coordinated,2,-112,2,60,116,0,2
+horizontal_gap,baseline,2,-106,0,60,116,0,2
+horizontal_gap,coordinated,2,-106,0,60,116,0,2

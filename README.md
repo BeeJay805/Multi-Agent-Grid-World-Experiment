@@ -9,8 +9,8 @@ and returns one action at each time step.
 The included `ExampleBaselineAgent` is an intentionally weak, independent
 agent.  It has local memory and a simple exploration rule, but it does **not**
 communicate, claim packages, or coordinate traffic.  It is a comparison point,
-not a solution to the lab.  `CoordinatedAgentTemplate` is a runnable shell
-with the coordination work left as TODOs for students.
+not a solution to the lab. `CoordinatedAgentTemplate` adds discoveries and
+claims while keeping the same movement rules.
 
 ## Run it
 
@@ -19,6 +19,7 @@ From this directory, run:
 
 ```bash
 python run_demo.py
+python run_experiments.py
 python -m unittest discover -s tests -v
 ```
 
@@ -28,10 +29,12 @@ python -m unittest discover -s tests -v
 | --- | --- |
 | `gridworld/environment.py` | Environment mechanics, scoring, local perception, simultaneous moves, messages, and event logs. |
 | `gridworld/models.py` | The `Percept`, `Action`, `Message`, and result data structures. |
-| `gridworld/agents.py` | The independent baseline example and the incomplete coordinated-agent template. |
+| `gridworld/agents.py` | Independent baseline and coordinated policy. |
 | `gridworld/runner.py` | A loop that asks each agent for its own action, then advances the world. |
-| `gridworld/scenarios.py` | One 8 x 8 starter map with four packages, obstacles, and a bottleneck. |
+| `gridworld/scenarios.py` | Starter map and two additional fixed 8 x 8 maps. |
 | `tests/test_environment.py` | Mechanics checks students can run while extending their policy. |
+| `tests/test_coordination.py` | Claim, stale-message, delivery-release, and reproducibility checks. |
+| `run_experiments.py` | Saves all six runs to `results/`, including maps, score terms, and full logs. |
 
 ## Environment contract
 
@@ -52,19 +55,59 @@ python -m unittest discover -s tests -v
 `EpisodeResult.events`; each event records the time, agent, percept summary,
 received/sent messages, action, result, and final position.
 
-## Student starting point
+## PEAS and policies
 
-1. Run the supplied independent baseline and record its deliveries, score,
-   collision attempts, and steps.
-2. Implement the TODOs in `CoordinatedAgentTemplate` (or create your own agent
-   class with the same `reset()` and `act()` methods).
-3. Define local rules for `DISCOVER`, `CLAIM`, and `RELEASE` messages.  Keep
-   package knowledge and claims in each agent's own state; do not read the
-   whole environment from the agent.
-4. Compare your policy against the baseline on the starter map and on the
-   additional fixed maps or seeds required by the lab.
-5. Extend the tests if you add behavior that needs a contract check.
+Performance: deliveries, team score, collisions, and steps. Environment: two
+robots, one base, four packages, and obstacles on an 8 x 8 grid. Actuators:
+N/S/E/W, wait, pickup, drop, and a message. Sensors: local 3 x 3 cells,
+position, carrying status, previous result, time, and incoming messages.
 
-The environment intentionally does not enforce a particular claim policy.
-Deciding how claims are made, respected, released, or repaired after a failed
-attempt is the core multi-agent design problem for the lab.
+The task is discrete and sequential: each turn changes the next decision.
+It is partially observable because the rest of the map is hidden. It is
+dynamic from each robot's view because the other robot can move or take a
+package each step, though the simulator does not advance during `act()`.
+It is cooperative because both robots contribute to one score.
+
+`run_episode` calls `observe` for each robot, gets their separate `act`
+decisions, and calls `environment.step`. The environment resolves movement
+and collisions, then pickup/drop, then messages for the next turn.
+
+The baseline remembers seen packages and the base. It collects a package
+underfoot, carries it home, or heads toward the nearest known package.
+Otherwise it cycles through directions. It ignores messages and has no
+global map. Both policies use the same per-robot direction orders.
+
+The coordinated policy also remembers a goal, package owners, and pending
+discoveries. DISCOVER shares a location; CLAIM reserves a target; RELEASE
+clears the sender's claim after delivery or abandoning a goal. Equal-distance
+packages use coordinate order. Conflicting claims use the lower robot ID.
+Current sight overrides delayed messages. Agents avoid occupied neighboring
+cells, but cannot predict simultaneous moves into an empty cell.
+
+## Recorded results
+
+Both unchanged policies ran on the same three maps with a 60-step horizon.
+All maps have at least five obstacles, four reachable packages, and a
+one-cell gap in a wall. Exact coordinates are in each saved JSON file.
+
+| Map | Policy | Delivered | Score | Collisions | Steps |
+| --- | --- | ---: | ---: | ---: | ---: |
+| starter | baseline | 1 | -123 | 0 | 60 |
+| starter | coordinated | 1 | -123 | 0 | 60 |
+| middle_gap | baseline | 2 | -106 | 0 | 60 |
+| middle_gap | coordinated | 2 | -112 | 2 | 60 |
+| horizontal_gap | baseline | 2 | -106 | 0 | 60 |
+| horizontal_gap | coordinated | 2 | -106 | 0 | 60 |
+
+In `middle_gap_coordinated.json`, robot-1 announces (2, 2) at t=1.
+Robot-2 receives it at t=2 and moves east toward a package outside its view.
+At t=8 both robots try to enter the base and are blocked. Those two
+collision penalties explain the six-point loss. Coordination changed the
+route, but did not increase deliveries. Greedy movement and repeated local
+exploration still leave packages undelivered. Better route memory and a
+rule for yielding near the base are possible extensions.
+
+The syntax fix and claim fixes are in `gridworld/agents.py`; environment
+mechanics and baseline behavior were left as supplied. The Google Doc holds
+the lab report, results table, and 791-word comparative analysis:
+https://docs.google.com/document/d/1wP7iS77UEllB9xcn6vrKhwlZgrHHNGpQz1VokJLk-HI/edit

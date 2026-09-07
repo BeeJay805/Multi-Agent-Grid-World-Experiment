@@ -1,0 +1,2691 @@
+{
+  "map": "middle_gap",
+  "policy": "coordinated",
+  "horizon": 60,
+  "initial_state": {
+    "width": 8,
+    "height": 8,
+    "base": [
+      0,
+      0
+    ],
+    "obstacles": [
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        5,
+        3
+      ],
+      [
+        6,
+        3
+      ],
+      [
+        7,
+        3
+      ]
+    ],
+    "packages": [
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        6,
+        6
+      ]
+    ],
+    "agents": {
+      "robot-1": [
+        0,
+        1
+      ],
+      "robot-2": [
+        2,
+        0
+      ]
+    }
+  },
+  "results": {
+    "map": "middle_gap",
+    "policy": "coordinated",
+    "deliveries": 2,
+    "score": -112,
+    "collisions": 2,
+    "steps": 60,
+    "moves": 116,
+    "invalid": 0,
+    "undelivered": 2
+  },
+  "events": [
+    {
+      "time": 0,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(0, 1); carrying=False; visible_packages=[(1, 1)]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": {
+        "kind": "DISCOVER",
+        "package_location": [
+          1,
+          1
+        ],
+        "sender": "robot-1"
+      },
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": {
+          "kind": "DISCOVER",
+          "package_location": [
+            1,
+            1
+          ],
+          "sender": null
+        }
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 0,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(2, 0); carrying=False; visible_packages=[(1, 1)]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": {
+        "kind": "DISCOVER",
+        "package_location": [
+          1,
+          1
+        ],
+        "sender": "robot-2"
+      },
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": {
+          "kind": "DISCOVER",
+          "package_location": [
+            1,
+            1
+          ],
+          "sender": null
+        }
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    },
+    {
+      "time": 1,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(1, 1); carrying=False; visible_packages=[(1, 1), (2, 2)]; base=(0, 0); messages=1",
+      "received_messages": [
+        {
+          "kind": "DISCOVER",
+          "package_location": [
+            1,
+            1
+          ],
+          "sender": "robot-2"
+        }
+      ],
+      "sent_message": {
+        "kind": "DISCOVER",
+        "package_location": [
+          2,
+          2
+        ],
+        "sender": "robot-1"
+      },
+      "action": {
+        "move": "WAIT",
+        "interaction": "PICKUP",
+        "message": {
+          "kind": "DISCOVER",
+          "package_location": [
+            2,
+            2
+          ],
+          "sender": null
+        }
+      },
+      "result": {
+        "movement": "WAITED",
+        "interaction": "PICKED_UP"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 1,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 0); carrying=False; visible_packages=[(1, 1)]; base=(0, 0); messages=1",
+      "received_messages": [
+        {
+          "kind": "DISCOVER",
+          "package_location": [
+            1,
+            1
+          ],
+          "sender": "robot-1"
+        }
+      ],
+      "sent_message": {
+        "kind": "CLAIM",
+        "package_location": [
+          1,
+          1
+        ],
+        "sender": "robot-2"
+      },
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": {
+          "kind": "CLAIM",
+          "package_location": [
+            1,
+            1
+          ],
+          "sender": null
+        }
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        0
+      ]
+    },
+    {
+      "time": 2,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(1, 1); carrying=True; visible_packages=[(2, 2)]; base=(0, 0); messages=1",
+      "received_messages": [
+        {
+          "kind": "CLAIM",
+          "package_location": [
+            1,
+            1
+          ],
+          "sender": "robot-2"
+        }
+      ],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 2,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(2, 0); carrying=False; visible_packages=[]; base=None; messages=1",
+      "received_messages": [
+        {
+          "kind": "DISCOVER",
+          "package_location": [
+            2,
+            2
+          ],
+          "sender": "robot-1"
+        }
+      ],
+      "sent_message": {
+        "kind": "RELEASE",
+        "package_location": [
+          1,
+          1
+        ],
+        "sender": "robot-2"
+      },
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": {
+          "kind": "RELEASE",
+          "package_location": [
+            1,
+            1
+          ],
+          "sender": null
+        }
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        1
+      ]
+    },
+    {
+      "time": 3,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(0, 1); carrying=True; visible_packages=[]; base=(0, 0); messages=1",
+      "received_messages": [
+        {
+          "kind": "RELEASE",
+          "package_location": [
+            1,
+            1
+          ],
+          "sender": "robot-2"
+        }
+      ],
+      "sent_message": {
+        "kind": "CLAIM",
+        "package_location": [
+          1,
+          1
+        ],
+        "sender": "robot-1"
+      },
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": {
+          "kind": "CLAIM",
+          "package_location": [
+            1,
+            1
+          ],
+          "sender": null
+        }
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 3,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(2, 1); carrying=False; visible_packages=[(2, 2)]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": {
+        "kind": "CLAIM",
+        "package_location": [
+          2,
+          2
+        ],
+        "sender": "robot-2"
+      },
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": {
+          "kind": "CLAIM",
+          "package_location": [
+            2,
+            2
+          ],
+          "sender": null
+        }
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        2
+      ]
+    },
+    {
+      "time": 4,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(0, 0); carrying=True; visible_packages=[]; base=(0, 0); messages=1",
+      "received_messages": [
+        {
+          "kind": "CLAIM",
+          "package_location": [
+            2,
+            2
+          ],
+          "sender": "robot-2"
+        }
+      ],
+      "sent_message": null,
+      "action": {
+        "move": "WAIT",
+        "interaction": "DROP",
+        "message": null
+      },
+      "result": {
+        "movement": "WAITED",
+        "interaction": "DROPPED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 4,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(2, 2); carrying=False; visible_packages=[(2, 2)]; base=None; messages=1",
+      "received_messages": [
+        {
+          "kind": "CLAIM",
+          "package_location": [
+            1,
+            1
+          ],
+          "sender": "robot-1"
+        }
+      ],
+      "sent_message": null,
+      "action": {
+        "move": "WAIT",
+        "interaction": "PICKUP",
+        "message": null
+      },
+      "result": {
+        "movement": "WAITED",
+        "interaction": "PICKED_UP"
+      },
+      "final_position": [
+        2,
+        2
+      ]
+    },
+    {
+      "time": 5,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(0, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": {
+        "kind": "RELEASE",
+        "package_location": [
+          1,
+          1
+        ],
+        "sender": "robot-1"
+      },
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": {
+          "kind": "RELEASE",
+          "package_location": [
+            1,
+            1
+          ],
+          "sender": null
+        }
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 5,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(2, 2); carrying=True; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        2
+      ]
+    },
+    {
+      "time": 6,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(0, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 6,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 2); carrying=True; visible_packages=[]; base=None; messages=1",
+      "received_messages": [
+        {
+          "kind": "RELEASE",
+          "package_location": [
+            1,
+            1
+          ],
+          "sender": "robot-1"
+        }
+      ],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        2
+      ]
+    },
+    {
+      "time": 7,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(1, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    },
+    {
+      "time": 7,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 2); carrying=True; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 8,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(1, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "BLOCKED_COLLISION",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    },
+    {
+      "time": 8,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 1); carrying=True; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "BLOCKED_COLLISION",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 9,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(1, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 9,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 1); carrying=True; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 10,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(1, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        1
+      ]
+    },
+    {
+      "time": 10,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 0); carrying=True; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WAIT",
+        "interaction": "DROP",
+        "message": null
+      },
+      "result": {
+        "movement": "WAITED",
+        "interaction": "DROPPED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 11,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        0
+      ]
+    },
+    {
+      "time": 11,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": {
+        "kind": "RELEASE",
+        "package_location": [
+          2,
+          2
+        ],
+        "sender": "robot-2"
+      },
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": {
+          "kind": "RELEASE",
+          "package_location": [
+            2,
+            2
+          ],
+          "sender": null
+        }
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    },
+    {
+      "time": 12,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 0); carrying=False; visible_packages=[]; base=None; messages=1",
+      "received_messages": [
+        {
+          "kind": "RELEASE",
+          "package_location": [
+            2,
+            2
+          ],
+          "sender": "robot-2"
+        }
+      ],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        1
+      ]
+    },
+    {
+      "time": 12,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 13,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        1
+      ]
+    },
+    {
+      "time": 13,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 14,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        0
+      ]
+    },
+    {
+      "time": 14,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 15,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        0
+      ]
+    },
+    {
+      "time": 15,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    },
+    {
+      "time": 16,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        1
+      ]
+    },
+    {
+      "time": 16,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 17,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        1
+      ]
+    },
+    {
+      "time": 17,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 18,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        0
+      ]
+    },
+    {
+      "time": 18,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 19,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        0
+      ]
+    },
+    {
+      "time": 19,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    },
+    {
+      "time": 20,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        1
+      ]
+    },
+    {
+      "time": 20,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 21,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        1
+      ]
+    },
+    {
+      "time": 21,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 22,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        0
+      ]
+    },
+    {
+      "time": 22,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 23,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        0
+      ]
+    },
+    {
+      "time": 23,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    },
+    {
+      "time": 24,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        1
+      ]
+    },
+    {
+      "time": 24,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 25,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        1
+      ]
+    },
+    {
+      "time": 25,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 26,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        0
+      ]
+    },
+    {
+      "time": 26,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 27,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        0
+      ]
+    },
+    {
+      "time": 27,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    },
+    {
+      "time": 28,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        1
+      ]
+    },
+    {
+      "time": 28,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 29,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        1
+      ]
+    },
+    {
+      "time": 29,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 30,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        0
+      ]
+    },
+    {
+      "time": 30,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 31,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        0
+      ]
+    },
+    {
+      "time": 31,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    },
+    {
+      "time": 32,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        1
+      ]
+    },
+    {
+      "time": 32,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 33,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        1
+      ]
+    },
+    {
+      "time": 33,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 34,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        0
+      ]
+    },
+    {
+      "time": 34,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 35,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        0
+      ]
+    },
+    {
+      "time": 35,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    },
+    {
+      "time": 36,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        1
+      ]
+    },
+    {
+      "time": 36,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 37,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        1
+      ]
+    },
+    {
+      "time": 37,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 38,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        0
+      ]
+    },
+    {
+      "time": 38,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 39,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        0
+      ]
+    },
+    {
+      "time": 39,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    },
+    {
+      "time": 40,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        1
+      ]
+    },
+    {
+      "time": 40,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 41,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        1
+      ]
+    },
+    {
+      "time": 41,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 42,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        0
+      ]
+    },
+    {
+      "time": 42,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 43,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        0
+      ]
+    },
+    {
+      "time": 43,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    },
+    {
+      "time": 44,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        1
+      ]
+    },
+    {
+      "time": 44,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 45,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        1
+      ]
+    },
+    {
+      "time": 45,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 46,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        0
+      ]
+    },
+    {
+      "time": 46,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 47,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        0
+      ]
+    },
+    {
+      "time": 47,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    },
+    {
+      "time": 48,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        1
+      ]
+    },
+    {
+      "time": 48,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 49,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        1
+      ]
+    },
+    {
+      "time": 49,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 50,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        0
+      ]
+    },
+    {
+      "time": 50,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 51,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        0
+      ]
+    },
+    {
+      "time": 51,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    },
+    {
+      "time": 52,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        1
+      ]
+    },
+    {
+      "time": 52,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 53,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        1
+      ]
+    },
+    {
+      "time": 53,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 54,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        0
+      ]
+    },
+    {
+      "time": 54,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 55,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        0
+      ]
+    },
+    {
+      "time": 55,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    },
+    {
+      "time": 56,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        1
+      ]
+    },
+    {
+      "time": 56,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "EAST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        1
+      ]
+    },
+    {
+      "time": 57,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(2, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        1
+      ]
+    },
+    {
+      "time": 57,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(1, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        1
+      ]
+    },
+    {
+      "time": 58,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 1); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        3,
+        0
+      ]
+    },
+    {
+      "time": 58,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 1); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "WEST",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        0,
+        0
+      ]
+    },
+    {
+      "time": 59,
+      "agent_id": "robot-1",
+      "percept_summary": "pos=(3, 0); carrying=False; visible_packages=[]; base=None; messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "NORTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        2,
+        0
+      ]
+    },
+    {
+      "time": 59,
+      "agent_id": "robot-2",
+      "percept_summary": "pos=(0, 0); carrying=False; visible_packages=[]; base=(0, 0); messages=0",
+      "received_messages": [],
+      "sent_message": null,
+      "action": {
+        "move": "SOUTH",
+        "interaction": "NONE",
+        "message": null
+      },
+      "result": {
+        "movement": "MOVED",
+        "interaction": "NOT_ATTEMPTED"
+      },
+      "final_position": [
+        1,
+        0
+      ]
+    }
+  ]
+}

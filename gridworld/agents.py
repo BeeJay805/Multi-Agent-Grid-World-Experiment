@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from os import remove
-
 from .models import Action, Direction, Interaction, Percept, Position, Terrain, MessageKind, Message
 
 
@@ -116,49 +114,39 @@ class ExampleBaselineAgent:
         return abs(first[0] - second[0]) + abs(first[1] - second[1])
 
 
-class CoordinatedAgentTemplate:
-    """A safe, incomplete shell for the student coordination policy.
-
-    The method intentionally returns WAIT until students add their own local
-    memory, claim rules, DISCOVER/CLAIM/RELEASE messages, and collision-aware
-    action selection.  It is not a hidden solution.
-    """
+class CoordinatedAgentTemplate(ExampleBaselineAgent):
+    """The baseline movement rules with local discoveries and package claims."""
 
     def reset(self, agent_id: str) -> None:
-        self.agent_id = agent_id
-        self.known_packages: set[Position] = set()
+        super().reset(agent_id)
         self.claimed_by: dict[Position, str] = {}
         self.current_goal = None
         self.unanounced_packages = set()
 
     def act(self, percept: Percept) -> Action:
-        # TODO 1: update only local memory from percept.visible_cells.
-        for position, cell in percept.visible_cells.items():
-            if cell.package_present:
-                if position not in self.known_packages:
-                    self.unanounced_packages.add(position)
-                self.known_packages.add(position)
-            else:
-                if position in self.known_packages:
-                    self.known_packages.remove(position)
-
-
-
-        # TODO 2: process messages received at the start of this decision.
+        old_goal = self.current_goal
+        # Process yesterday's messages before checking what is visible now.
         for message in percept.messages:
+            if message.package_location is None or message.sender is None:
+                continue
             if message.kind == MessageKind.RELEASE:
-                if message.package_location in self.claimed_by:
-
+                if self.claimed_by.get(message.package_location) == message.sender:
                     del self.claimed_by[message.package_location]
             elif message.kind == MessageKind.DISCOVER:
                 self.known_packages.add(message.package_location)
 
             elif message.kind == MessageKind.CLAIM:
-                self.claimed_by[message.package_location] = message.sender
+                owner = self.claimed_by.get(message.package_location, message.sender)
+                self.claimed_by[message.package_location] = min(owner, message.sender)
 
+        # Update memory only from the local percept, including the base.
+        for position, cell in percept.visible_cells.items():
+            if cell.package_present and position not in self.known_packages:
+                self.unanounced_packages.add(position)
+        self._update_memory(percept)
+        self.unanounced_packages.intersection_update(self.known_packages)
 
-        # TODO 3: choose a target that respects claims and avoids local traffic.
-        old_goal = self.current_goal
+        # Choose a target that respects claims.
         if not percept.carrying:
 
             available_packages: set[Position] = set()
@@ -184,7 +172,7 @@ class CoordinatedAgentTemplate:
             ):
                 self.current_goal = best_package
 
-        # TODO 4: send DISCOVER, CLAIM, or RELEASE when the protocol requires it.
+        # Send at most one message, with releases taking priority.
         outgoing_message = None
         # RELEASE
         if old_goal is not None and old_goal != self.current_goal:
@@ -192,7 +180,7 @@ class CoordinatedAgentTemplate:
                 del self.claimed_by[old_goal]
                 outgoing_message = Message(MessageKind.RELEASE, old_goal)
         # DISCOVER
-        if self.unanounced_packages:
+        if outgoing_message is None and self.unanounced_packages:
             smallest_package = min(self.unanounced_packages)
             outgoing_message = Message(MessageKind.DISCOVER, smallest_package)
             self.unanounced_packages.remove(smallest_package)
@@ -206,8 +194,17 @@ class CoordinatedAgentTemplate:
 
 
 
-        # TODO 5: return one Action(move=..., interaction=..., message=...).
+        # Reuse the baseline's movement so the comparison isolates coordination.
         if percept.carrying:
-            if
+            if percept.self_position == self.base_location:
+                return Action(interaction=Interaction.DROP, message=outgoing_message)
+            if self.base_location is not None:
+                return Action(move=self._move_toward(percept, self.base_location),
+                              message=outgoing_message)
+        elif self.current_goal is not None:
+            if percept.self_position == self.current_goal:
+                return Action(interaction=Interaction.PICKUP, message=outgoing_message)
+            return Action(move=self._move_toward(percept, self.current_goal),
+                          message=outgoing_message)
 
-        return Action(, , outgoing_message)
+        return Action(move=self._explore(percept), message=outgoing_message)
